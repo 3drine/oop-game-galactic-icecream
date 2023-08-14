@@ -1,0 +1,164 @@
+8:43 PM 8/11/2023 
+	passed obstacle choice array from game class to object class 
+8:51 PM 8/11/2023
+	added new function in game class to randomly defined an expected combo based on level attribute
+9:06 PM 8/11/2023
+	added dom element creation for expected combo and displayed on center left of the body
+9:10 PM 8/11/2023
+	nvm will change comboarray for an object
+9:15 PM 8/11/2023
+	changed combo array for an object ; formatted html to reflect the object 
+9:25 PM 8/11/2023
+	added flavor as a parameter of the obstacle 
+9:35 PM 8/11/2023
+	added updateComboDisplay() function which will replace the values in the html div 
+	added logic to decrease number of chocolates once collision detected, but too many collision events :/
+8:00 AM 8/12/2023
+	added logic to decrease by one for same objects for chocolate 
+8:13 AM 8/12/2023
+	implemented count logic with vanilla and strawberry using a switch function but goes negative - need to stop at 0;
+8:23 AM 8/12/2023
+	fixed the negative values with 3 dégueulasse inline if statements 
+8:28 AM 8/12/2023
+	added poop ingame for objects to avoid 
+8:30 AM 8/12/2023
+	added game over logic based on poop collision
+8:36 AM 8/12/2023
+	need to move the moving function to individual elements, otherwise, stacked element keeps falling 
+8:41 AM 8/12/2023
+	moved the moving function on the obstacle createDomElement and stored the interval in this.movement
+8:46 AM 8/12/2023
+	icecream balls can be stored in player dom element stopped the moving by clearing interval this.movement 11:04 AM 8/12/2023
+	need to store the balls in an object too 
+11:12 AM 8/12/2023
+	created array for storing balls in player class player.stackedBalls
+11:15 AM 8/12/2023
+	created CSS class 'stacked' to mark objects that need to be stacked on top of the player 
+11:19 AM 8/12/2023
+	really need to fix the ratios and clean pixel perfect the balls - not use percentage anymore
+11:26 AM 8/12/2023
+	focussing on X axis first 
+11:44 AM 8/12/2023
+	replaced all obstacles with px values 
+11:50 AM 8/12/2023
+	replaced player with pixel values. Checking collision.... 
+11:53 AM 8/12/2023
+	collision still working :) :) :) 
+11:54 AM 8/12/2023
+	need dynamic height on the player object for stacking
+12:03 PM 8/12/2023
+	got growing logic working , can work on stacking inside - will lock dedicated space for icecream cone later 
+10:41 AM 8/14/2023
+	what makes the object stop moving? clearInterval(obstacleInstance.movement) 
+11:00 AM 8/14/2023
+	created new function in player class 'stackItem' to stack items in stackedBalls property and manipulate dom
+11:07 AM 8/14/2023
+	managed to edit x value of object in the stackItem function to stack in the middle
+11:07 AM 8/14/2023
+	now working on y.... 
+11:41 AM 8/14/2023
+	managed to properly stack by ammending y property of the stacked dom element 
+11:55 AM 8/14/2023
+	fixed hitbox to only first 20px - ignored below
+11:57 AM 8/14/2023
+	adjusted player's height to have more space for design later on 
+12:11 PM 8/14/2023
+	added weight to player by decreasing speed on the function stackItem - for now a floor of 2 seems like a good value 
+12:12 PM 8/14/2023
+	added gravity parameter on obstacle class 
+12:19 PM 8/14/2023
+	added gravity logic, gravity of 2 seems like a good value for now
+12:34 PM 8/14/2023
+	Problem: obstacle that hits the hitbox also has the time to hit the players' non-hitbox area... solved by using the hit variable as false condition for the side collision detection 
+12:35 PM 8/14/2023
+	added new function in game class 'detectSideCollision'
+12:36 PM 8/14/2023
+	now will work on the spinning feature using transform rotate on obstacle 
+12:39 PM 8/14/2023
+	added status param on obstacle class 
+2:19 PM 8/14/2023
+	seems like I can do the spinning without js 
+2:23 PM 8/14/2023
+	got spinning working with css animation + keyframe deifinition
+2:34 PM 8/14/2023
+	added antigravity item logic (player weighs nothing for a bit) 
+2:50 PM 8/14/2023
+	added slowtime item logic - logic works but not sure about the gravity values. Had to move gravity on the game class to make it a dynamic value for the obstacle 
+3:05 PM 8/14/2023
+	slowtime doesnt time out 
+	careful if you pick 2 special items after each other for restoring original value 
+3:11 PM 8/14/2023
+	fixed the antigravity item (player moves slower) by adding a boolean param on the player for antigravity, if he already has it on, will do nothing 
+3:22 PM 8/14/2023
+	fixed the slowTime() function 
+3:29 PM 8/14/2023
+	added cherry to the stackable items 
+3:29 PM 8/14/2023
+	endgame logic working in console!!
+4:08 PM 8/14/2023
+	added endgame deleting elements onscreen
+4:21 PM 8/14/2023
+	added level html to screen on the right of the board 
+4:39 PM 8/14/2023
+	added 3 divs start / board / end and class 'active/inactive'
+5:57 PM 8/14/2023
+	changing the class active/inactive bcs it's annoying and not optimal 
+6:15 PM 8/14/2023
+	fixed directly in the CSS value - START screen will start with a display; table cell (for now) and gamescreen + endscreen will start with display none 
+6:25 PM 8/14/2023
+	added all screens to an array with path and preferred display mode - as you turn they on / off- you don't want always display: block for ALL screens 
+6:32 PM 8/14/2023
+	added a super cool function showScreen - just add your screen there and it will update all other screens to display:none and change the chosen screen to the favorite defined display 
+6:40 PM 8/14/2023
+	added 'next screen' for separate layout from the 'start screen' 
+6:50 PM 8/14/2023
+	added flow for automatically nagivating between the screens 
+6:52 PM 8/14/2023
+	moved new player initiating in the start() function instead of in the construction for logical purposes - need to keep the same game on for leveling 
+6:53 PM 8/14/2023
+	game is not starting after clicking on NEXT 
+6:57 PM 8/14/2023
+	yaaay it works now - I moved the 'game' variable in the global scope :) now NEW GAME on start button but FUNCTION START on next button 
+
+
+-------- DONE FOR TODAY ------ COMMIT ------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
