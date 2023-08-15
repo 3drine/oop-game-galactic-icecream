@@ -4,7 +4,7 @@ class Player {
         this.boardWidth = document.querySelector("#board").clientWidth;
         this.positionX = this.boardWidth / 2 - this.width / 2;
         this.positionY = 0;
-        this.height = 100;
+        this.height = 120;
         this.domElement = null;
         this.speed = 10;
         this.createDomElement();
@@ -55,10 +55,10 @@ class Player {
 
 class Obstacle {
     constructor(obstacleChoice, gravity) {
-        this.width = 30;
+        this.width = 50;
         this.positionX = Math.random() * ((500 - this.width) - 0) + 0;
         this.positionY = document.querySelector("#board").clientHeight;
-        this.height = 30;
+        this.height = 50;
         this.domElement = null;
         this.speed = 1;
         this.choicesArray = obstacleChoice;
@@ -111,7 +111,7 @@ class Game {
     }
     start() {
         this.player = new Player;
-        
+
         //invokes attach  event listener
         this.attachEventListeners();
 
@@ -225,22 +225,29 @@ class Game {
         this.expectedCombo.vanilla = Math.floor(Math.random() * (5 - 0) + 0);
         this.expectedCombo.strawberry = Math.floor(Math.random() * (5 - 0) + 0);
 
-        this.choiceDomElement = document.createElement("div");
-        this.choiceDomElement.id = "expectedCombo";
+        if (this.choiceDomElement === null) {
+            this.choiceDomElement = document.createElement("div");
+            this.choiceDomElement.id = "expectedCombo";
+            document.querySelector('body').appendChild(this.choiceDomElement);
+        }
         this.updateComboDisplay();
 
     }
     updateComboDisplay() {
-        this.choiceDomElement.innerText = `Chocolate: ${this.expectedCombo.chocolate}
-        Vanilla: ${this.expectedCombo.vanilla}
-        Strawberry: ${this.expectedCombo.strawberry}`;
         document.querySelector('body').appendChild(this.choiceDomElement);
+        this.choiceDomElement.innerHTML = `<img src="./img/chocolate.png" alt=""> x${this.expectedCombo.chocolate} <br>
+        <img src="./img/vanilla.png" alt=""> x${this.expectedCombo.vanilla} <br>
+        <img src="./img/strawberry.png" alt=""> x${this.expectedCombo.strawberry}`;
+
     }
     displayLevel() {
-        this.levelDomElement = document.createElement('div');
-        this.levelDomElement.id = "lvl";
+        if (this.levelDomElement === null) {
+            this.levelDomElement = document.createElement('div');
+            this.levelDomElement.id = "lvl";
+            document.querySelector("body").appendChild(this.levelDomElement);
+        }
         this.levelDomElement.innerText = "LEVEL: " + this.level;
-        document.querySelector("body").appendChild(this.levelDomElement);
+
     }
     antiGravityItem() {
         if (this.player.antigravity === false) {
@@ -285,10 +292,10 @@ class Game {
 }
 
 
-let scrStart = {dom: document.getElementById('start'), displayMode:'table-cell'};
-let scrGame = {dom: document.getElementById('board'), displayMode:'block'};
-let scrNext = {dom: document.getElementById('next'), displayMode:'table-cell'};
-let scrEnd = {dom: document.getElementById('end'), displayMode:'table-cell'};
+let scrStart = { dom: document.getElementById('start'), displayMode: 'table-cell' };
+let scrGame = { dom: document.getElementById('board'), displayMode: 'block' };
+let scrNext = { dom: document.getElementById('next'), displayMode: 'table-cell' };
+let scrEnd = { dom: document.getElementById('end'), displayMode: 'table-cell' };
 let arrScreens = [scrStart, scrGame, scrNext, scrEnd]
 let game = null
 document.getElementById('btn-start').addEventListener('click', () => {

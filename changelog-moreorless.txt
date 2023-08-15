@@ -122,6 +122,40 @@
 
 
 -------- DONE FOR TODAY ------ COMMIT ------
+Functional MVP implemented
+ - Class Player added: 
+can move left and right at a dynamic speed defined by this.speed and stack items in arrays.
+ - Class Obstacle added: 
+generate in an interval obstacles with random x and random flavor - descending y at a dynamic speed controlled by gravity property 
+ - Class Game added: 
+starts game, initiates player that can be controlled with left/right arrow, defines a random icecream combo to achieve, dynamic leveling starting at 1, detects custom collision for a. successful hit on the first 20px b. side collision which makes the obstacle spin, added logic for 2 items (antigravity: increases player.speed / slowTime: reduces obstacle speed by decreasing obstacle.gravity)
+
+4 screens added and end game + basic levelling logic added 
+
+TMRW TDB: Design & retry button / special level if I have time 
+
+------------------------------
+
+11:35 AM 8/15/2023
+	added icons for cone, all icecream balls & special items 
+11:43 AM 8/15/2023
+	added button cosmetics with neon 
+11:46 AM 8/15/2023
+	added transparency and stuff to background
+11:47 AM 8/15/2023
+	changed body background for a galaxy placeholder 
+11:52 AM 8/15/2023
+	adjusted slightly level and combo box display (cosmetic only)
+11:54 AM 8/15/2023
+	adjusted all backgrounds for better game testing
+12:00 PM 8/15/2023
+	changed layout in function updateComboDisplay to display icecream picture instead of name
+12:20 PM 8/15/2023
+	fixed combo and level displays are duplicating and overlapping by adding an if condition to create and append the dom element only if this.choiceDomElement === null on the game class on the defineRandomCombo method 
+12:22 PM 8/15/2023
+	did the exact same for levelDomElement on game class on displayLevel() method
+
+
 
 
 

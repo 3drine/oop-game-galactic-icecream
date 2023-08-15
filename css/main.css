@@ -3,31 +3,44 @@ body {
     margin: 0;
     padding: 0;
     position: relative;
+    background-image: url(../img/galaxy.jpg);
 }
 
 button {
-    height: auto;
-    width: auto;
-    font-size: 6rem;
-    padding: 3rem;
+        padding: 20px 20px;
+        display: inline-block;
+        color: white;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        text-decoration: none;
+        font-size: 3em;
+        overflow: hidden;
+        background: rgba(73,14,195,0.3);
+}
 
-    
+button:hover {
+    color: #111;
+        background: pink;
+        box-shadow: 0 0 50px pink;
+
 }
 
 
 #start{
-    background-color: lightblue;
+    background-color: none;
     height: 100vh;
     width: 100vw;
     text-align: center;
     margin: auto;
     display: table-cell;
     vertical-align: middle;
+    background-image: url(../img/galaxy.jpg);
+    background-size: cover;
     
 }
 
 #board {
-    background-color: wheat;
+    background-color: rgb(68, 13, 104);
     height: 100vh;
     width: 500px;
     margin:auto;
@@ -38,12 +51,13 @@ button {
 
 #next {
     display: none;
-    background-color: lightseagreen;
     height: 100vh;
     width: 100vw;
     text-align: center;
     margin: auto;
     vertical-align: middle;
+    background-image: url(../img/galaxy.jpg);
+    background-size: cover;
 }
 
 #end {
@@ -51,51 +65,98 @@ button {
 }
 
 #player {
-    background-color: red;
+    background-color: none;
     position: absolute;
     border: purple 2px ;
     display: flex;
     flex-direction: column;
+    background-image: url(../img/cone.png);
+    background-size:3rem;
+    background-position: bottom;
+    background-repeat: no-repeat;
 }
 
 .obstacle {
-    background-color: orange; 
+    background-color: none; 
     position: absolute;
     border-radius: 0px; 
-    border: red 2px dotted;
+    border: none;
     transform: rotate();
 }
 
 .chocolate {
-    background-color: brown;
+    background-color: none;
+    background-image: url(../img/chocolate.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 .vanilla {
-    background-color: yellow;
+    background-color: none;
+    background-image: url(../img/vanilla.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 .strawberry {
-    background-color: pink;
+    background-color: none;
+    background-image: url(../img/strawberry.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
 }
 .cherry {
-    background-color: green;
+    background-color: none;
+    background-image: url(../img/cherry.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .antigravity {
-    background-color: white;
+    background-color: none;
+    background-image: url(../img/feather.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 .slowTime {
-    background-color: aqua;
+    background-color: none;
+    background-image: url(../img/clock.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-size: contain;
 }
 
 #expectedCombo{
     position: absolute;
     top: 50%;
     left:10%;
-    background-color: orange;
+    padding: 20px 20px;
+    display: inline-block;
+    color: white;
+    letter-spacing: 2px;
+    text-decoration: none;
+    font-size: 1.5em;
+    overflow: hidden;
+    background: rgba(73,14,195,0.3);
 }
+
+#expectedCombo img{
+    max-height: 50px;
+}
+
 #lvl{
     position: absolute;
     top: 50%;
     right:10%;
-    background-color: orange;
+    padding: 20px 20px;
+    display: inline-block;
+    color: white;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 2em;
+    overflow: hidden;
+    background: rgba(73,14,195,0.3);
+    text-shadow: 0px 0px white;
+    box-shadow: 0 0 50px pink;
 }
 
 .stacked {
