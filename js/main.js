@@ -6,7 +6,7 @@ class Player {
         this.positionY = 0;
         this.height = 120;
         this.domElement = null;
-        this.speed = 10;
+        this.speed = 1;
         this.createDomElement();
         this.stackedBalls = [];
         this.antigravity = false;
@@ -27,6 +27,19 @@ class Player {
             this.positionX = this.positionX - this.speed;
             this.domElement.style.left = this.positionX + 'px';
         }
+        let lag = 3;
+        let incrCount=1;
+        this.stackedBalls.forEach((element) => {
+            element.positionX = lag*incrCount;
+            element.domElement.style.left = element.positionX + "px";
+            incrCount++;
+            // setTimeout(()=> {
+            //     element.positionX = 0;
+            //     element.domElement.style.left = element.positionX + "px";
+            // })
+        });
+
+        
 
     }
     moveRight() {
@@ -34,9 +47,21 @@ class Player {
             this.positionX = this.positionX + this.speed;
             this.domElement.style.left = this.positionX + 'px';
         }
+        let lag = -3;
+        let incrCount=1;
+        this.stackedBalls.forEach((element) => {
+            element.positionX = lag*incrCount;
+            element.domElement.style.left = element.positionX + "px";
+            incrCount++;
+            // setTimeout(()=> {
+            //     element.positionX = 0;
+            //     element.domElement.style.left = element.positionX + "px";
+            // })
+        });
+
     }
     stackItem(obstacleInstance) {
-        this.stackedBalls.push(obstacleInstance.flavor);
+        this.stackedBalls.push(obstacleInstance);
         obstacleInstance.domElement.classList.add('stacked');
         this.domElement.style.height = this.height + 'px';
         obstacleInstance.domElement.style.left = (this.width / 2) - (obstacleInstance.width / 2) + 'px';
@@ -91,8 +116,7 @@ class Obstacle {
 
         this.movement = setInterval(() => {
             this.moveDown();
-        }, 10
-        )
+        }, 10);
     }
 
 }
@@ -108,12 +132,13 @@ class Game {
         this.choiceDomElement = null;
         this.levelDomElement = null;
         this.gravity = 2;
+        this.attachEventListeners();
     }
     start() {
         this.player = new Player;
 
         //invokes attach  event listener
-        this.attachEventListeners();
+        //this.attachEventListeners();
 
         //defines a random combo to achieve 
         this.defineRandomCombo();
@@ -125,7 +150,7 @@ class Game {
         this.createObjInteral = setInterval(() => {
             let newObstacle = new Obstacle(this.choicesArray, this.gravity);
             this.obstaclesArr.push(newObstacle);
-        }, 3000);
+        }, 1000);
 
         // move all obstacles 
         setInterval(() => {
@@ -159,7 +184,8 @@ class Game {
         //remove if outside
         if (obstacleInstance.positionY < 0 - obstacleInstance.height) {
             obstacleInstance.domElement.remove();
-            this.obstaclesArr.shift();
+            let index = this.obstaclesArr.indexOf(obstacleInstance);
+            this.obstaclesArr.splice(index, 1);
         }
     }
     detectCollision(obstacleInstance) {
@@ -191,6 +217,8 @@ class Game {
                 //add stacking function HERE
                 if (obstacleInstance.flavor === "chocolate" || obstacleInstance.flavor === "vanilla" || obstacleInstance.flavor === "strawberry" || obstacleInstance.flavor === "cherry") {
                     this.player.stackItem(obstacleInstance);
+                    let index = this.obstaclesArr.indexOf(obstacleInstance);
+                    this.obstaclesArr.splice(index, 1);
                 }
                 else { obstacleInstance.domElement.remove() }
 
@@ -211,8 +239,6 @@ class Game {
             if (obstacleInstance.hit === false && obstacleInstance.status !== "spin") {
                 obstacleInstance.status = "spin";
                 obstacleInstance.domElement.classList.add('spin');
-
-                console.log("almost got it!!!")
             }
 
         }
@@ -276,16 +302,19 @@ class Game {
             element.domElement.remove();
         }
         )
+        this.obstaclesArr = [];
         if (this.expectedCombo.chocolate === 0 &&
             this.expectedCombo.vanilla === 0 &&
             this.expectedCombo.strawberry === 0) {
             console.log("ITS A WIN");
+            document.querySelector("#btn-next").innerText = "Next"
             showScreen(scrNext);
             this.level++;
             this.displayLevel();
         }
         else {
             console.log("LOOSER");
+            document.querySelector("#btn-next").innerText = "Retry"
             showScreen(scrNext);
         }
     }

@@ -153,9 +153,30 @@ TMRW TDB: Design & retry button / special level if I have time
 12:20 PM 8/15/2023
 	fixed combo and level displays are duplicating and overlapping by adding an if condition to create and append the dom element only if this.choiceDomElement === null on the game class on the defineRandomCombo method 
 12:22 PM 8/15/2023
-	did the exact same for levelDomElement on game class on displayLevel() method
+	did the exact same for levelDomElement on game class on displayLevel() method 
 
 
+---- all works :) lunch break ------------ COMMIT ------------
+Cosmetic additions and dom elements fixed 
+ - Added skinning and cosmetic for all obstacles, player, start screen, next screen
+ - Fixed combo and level display bug (duplicated each time start() was invoked) 
+
+-----------------------------------------------
+
+2:24 PM 8/15/2023
+	added dom modification to modify btn-next text based on win/loss logic (NEXT(W)/RETRY(L)) 
+
+2:19 PM 8/15/2023
+	will work on movement now.... hitbox seems to be defect when time is slowed... ???? trying to remove stacked obstacle from the array so I can move and slow all at once???? 
+3:23 PM 8/15/2023
+	fixed the hitbox bug, items were removed from the ObstacleArr synchronically when they felt asynchronous because of time slowed down for some of them ! 
+3:46 PM 8/15/2023
+	fixed the player speed increasing after leveling up - the event listener was added multiple times i.e. every new game start 
+3:47 PM 8/15/2023
+	fixed the random hits on retry by clearing the obstacleArr on the method endGame() - before it was removing it from the dom but not from the array
+3:52 PM 8/15/2023
+	got helped from Luis and Daniel reg object moment and tilting based on speed - will work on this tmrw 
+	
 
 
 
