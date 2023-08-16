@@ -176,6 +176,51 @@ Cosmetic additions and dom elements fixed
 	fixed the random hits on retry by clearing the obstacleArr on the method endGame() - before it was removing it from the dom but not from the array
 3:52 PM 8/15/2023
 	got helped from Luis and Daniel reg object moment and tilting based on speed - will work on this tmrw 
+
+------------CALLING IT A DAY, BRAIN IN LIQUID STAGE------- COMMIT
+bug fixing, game logic 
+ - fixed major bugs: i.exponential speed on retry, ii.hitbox defect after slowtime, iii.random phantom hit on retry
+ - added dynamic button 'Next OR Retry' based on W/L outcome
+
+
+---------------------------------------------------
+
+10:52 AM 8/16/2023
+	added baseSpeed (potential speed) to player and speed (actual current speed) -> increments on moving
+10:58 AM 8/16/2023
+	added movementDirection property on player
+	added event listener on keyup left&right arrow: movementDirection = null
+11:26 AM 8/16/2023
+	implemented speed decrease if no movement 
+	implemented speed logic on moveLeft and moveRight 
+12:56 PM 8/16/2023
+	implemented stackedItem movement with a lag following a sine wave
+1:49 PM 8/16/2023
+	fixed movement physics a little by adapting speed / deleted increased speed movement because I didn't like it 
+3:08 PM 8/16/2023
+	collision super difficult - I fixed parts of it
+4:05 PM 8/16/2023
+	fixed the collision!!!! be careful to ammend BOTH OBJECT AND DOM ELEMENT
+4:08 PM 8/16/2023
+	I will ATTEMPT to do side collision brb crying 
+4:31 PM 8/16/2023
+	side collision working!!! 
+4:38 PM 8/16/2023
+	now working on infinity gameplay 
+6:19 PM 8/16/2023
+	have somewhat infinite logic 
+
+
+------------------------- DONE FOR TODAY --- COMMIT ---------------
+Added physics, movement inertia and weird gravity 
+Modified custom hitbox, removed from the player and added to icecream ball instead 
+Hitbox situation now: get LAST icecreamball (on top) last 20 px -> this will be the HIT hitbox (and x can be different than player now)  && get ALL icecream balls EXCEPT top one -> this is the MISS hitbox (side collision) 
+
+
+
+
+
+
 	
 
 

@@ -6,10 +6,12 @@ class Player {
         this.positionY = 0;
         this.height = 120;
         this.domElement = null;
-        this.speed = 1;
+        this.speed = 0;
+        this.baseSpeed = 10;
         this.createDomElement();
         this.stackedBalls = [];
         this.antigravity = false;
+        this.movementDirection = null;
 
     }
     createDomElement() {
@@ -24,57 +26,62 @@ class Player {
     }
     moveLeft() {
         if (this.positionX > 0) {
-            this.positionX = this.positionX - this.speed;
+            this.movementDirection = 'left';
+            //if(this.speed>0) {this.speed = 0};
+            //if(this.speed >= 0) {this.speed -=5}
+            this.positionX = this.positionX - this.baseSpeed;
             this.domElement.style.left = this.positionX + 'px';
+            this.speed--
         }
-        let lag = 3;
-        let incrCount=1;
-        this.stackedBalls.forEach((element) => {
-            element.positionX = lag*incrCount;
-            element.domElement.style.left = element.positionX + "px";
-            incrCount++;
-            // setTimeout(()=> {
-            //     element.positionX = 0;
-            //     element.domElement.style.left = element.positionX + "px";
-            // })
-        });
-
-        
 
     }
     moveRight() {
         if (this.positionX < this.boardWidth - this.width) {
-            this.positionX = this.positionX + this.speed;
+            this.movementDirection = 'right';
+            //if(this.speed<0) {this.speed = 0};
+            //if(this.speed <= 0) {this.speed +=5}
+            this.positionX = this.positionX + this.baseSpeed;
             this.domElement.style.left = this.positionX + 'px';
+            this.speed++
         }
-        let lag = -3;
-        let incrCount=1;
-        this.stackedBalls.forEach((element) => {
-            element.positionX = lag*incrCount;
-            element.domElement.style.left = element.positionX + "px";
-            incrCount++;
-            // setTimeout(()=> {
-            //     element.positionX = 0;
-            //     element.domElement.style.left = element.positionX + "px";
-            // })
-        });
-
     }
     stackItem(obstacleInstance) {
         this.stackedBalls.push(obstacleInstance);
         obstacleInstance.domElement.classList.add('stacked');
         this.domElement.style.height = this.height + 'px';
-        obstacleInstance.domElement.style.left = (this.width / 2) - (obstacleInstance.width / 2) + 'px';
-        obstacleInstance.domElement.style.bottom = (this.height - obstacleInstance.height) + 'px';
+
+        obstacleInstance.positionX = (this.width / 2) - (obstacleInstance.width / 2);
+        obstacleInstance.domElement.style.left = obstacleInstance.positionX + 'px';
+
+        obstacleInstance.positionY = (this.height - obstacleInstance.height);
+        obstacleInstance.domElement.style.bottom = obstacleInstance.positionY + 'px';
 
         this.domElement.appendChild(obstacleInstance.domElement);
-        this.height += 30;
-        if (this.speed > 2) {
-            this.speed--
+        this.height += obstacleInstance.height - 20;
+        if (this.baseSpeed > 2) {
+            this.baseSpeed -= 0.5;
         };
         clearInterval(obstacleInstance.movement);
 
+
+        if(this.stackedBalls.length>Math.floor((document.querySelector("#board").clientHeight/obstacleInstance.height)*0.8))
+        {
+            this.height-=30;
+            this.domElement.style.height = this.height + "px"
+            this.stackedBalls[0].domElement.remove();
+            this.stackedBalls.shift();
+            this.stackedBalls.forEach((element) => {
+                element.positionY-=30;
+                element.domElement.style.bottom = element.positionY+"px";
+            })
+
+            
+        }
+        
+
     }
+
+
 
 }
 
@@ -126,7 +133,7 @@ class Game {
         this.player = null;
         this.obstaclesArr = [];
         this.expectedCombo = { chocolate: 0, vanilla: 0, strawberry: 0 };
-        this.choicesArray = ["vanilla", "chocolate", "strawberry", "cherry", "antigravity", "slowTime"];
+        this.choicesArray = ["vanilla", "chocolate", "strawberry", "antigravity", "slowTime"];
         this.level = 1;
         this.pickedArray = [];
         this.choiceDomElement = null;
@@ -152,6 +159,37 @@ class Game {
             this.obstaclesArr.push(newObstacle);
         }, 1000);
 
+        
+
+
+        setInterval(() => {
+            if (this.player.movementDirection === null && this.player.speed !== 0) {
+                if (this.player.speed < 0) {
+                    this.player.speed += 2
+                }
+                if (this.player.speed > 0) {
+                    this.player.speed -= 2
+                }
+            }
+            // if(this.player.movementDirection==="left"&& this.player.speed>0) {
+            //     this.player.speed-=5
+            // }
+            // if(this.player.movementDirection==="right"&& this.player.speed<0) {
+            //     this.player.speed+=5
+            // }
+
+
+            //console.log(this.player.movementDirection+this.player.speed);
+            let lag = 0;
+            this.player.stackedBalls.forEach((element) => {
+                element.positionX = (-this.player.speed) * Math.sin(lag)
+                element.domElement.style.left = element.positionX + 'px';
+                lag += 0.2;
+            })
+
+
+        }, 20)
+
         // move all obstacles 
         setInterval(() => {
             this.obstaclesArr.forEach((obstacleInstance) => {
@@ -166,8 +204,18 @@ class Game {
 
                 //checks for missed collision
                 this.detectSideCollision(obstacleInstance);
+
+                
+                
+
+        
+
+
             })
         }, 100);
+
+
+
 
     }
     attachEventListeners() {
@@ -179,6 +227,14 @@ class Game {
                 this.player.moveRight();
             }
         })
+        document.addEventListener('keyup', (event) => {
+            if (event.key === "ArrowLeft" || "ArrowRight") {
+                this.player.movementDirection = null;
+            }
+        })
+
+
+
     }
     removeObstacleIfOutside(obstacleInstance) {
         //remove if outside
@@ -189,11 +245,26 @@ class Game {
         }
     }
     detectCollision(obstacleInstance) {
+        let collider
+
+        if (this.player.stackedBalls.length === 0) {
+            collider = this.player
+        }
+        else {
+            collider = JSON.parse(JSON.stringify((this.player.stackedBalls[this.player.stackedBalls.length - 1])));
+
+            collider.positionX = this.player.positionX + this.player.stackedBalls[this.player.stackedBalls.length - 1].positionX;
+            collider.height = this.player.height;
+            collider.positionY = this.player.positionY;
+        }
+
+
+
         if (
-            this.player.positionX < obstacleInstance.positionX + obstacleInstance.width &&
-            this.player.positionX + this.player.width > obstacleInstance.positionX &&
-            (this.player.height - 20) < obstacleInstance.positionY + obstacleInstance.height &&
-            this.player.positionY + this.player.height > obstacleInstance.positionY
+            collider.positionX < obstacleInstance.positionX + obstacleInstance.width &&
+            collider.positionX + collider.width > obstacleInstance.positionX &&
+            (this.player.height + collider.positionY - 20) < obstacleInstance.positionY + obstacleInstance.height &&
+            collider.positionY + collider.height > obstacleInstance.positionY
         ) {
             // Collision detected!
             console.log("collision");
@@ -230,18 +301,32 @@ class Game {
     }
 
     detectSideCollision(obstacleInstance) {
-        if (
-            this.player.positionX < obstacleInstance.positionX + obstacleInstance.width &&
-            this.player.positionX + this.player.width > obstacleInstance.positionX &&
-            this.player.positionY < obstacleInstance.positionY + obstacleInstance.height &&
-            this.player.positionY + (this.player.height - 20) > obstacleInstance.positionY
-        ) {
-            if (obstacleInstance.hit === false && obstacleInstance.status !== "spin") {
-                obstacleInstance.status = "spin";
-                obstacleInstance.domElement.classList.add('spin');
+
+        this.player.stackedBalls.forEach((element, index) => {
+            if (index !== this.player.stackedBalls.length - 1) {
+
+                if (
+                    this.player.positionX + element.positionX < obstacleInstance.positionX + obstacleInstance.width &&
+                    this.player.positionX + element.positionX + element.width > obstacleInstance.positionX &&
+                    element.positionY < obstacleInstance.positionY + obstacleInstance.height &&
+                    element.positionY + element.height > obstacleInstance.positionY
+                ) {
+                    if (obstacleInstance.hit === false && obstacleInstance.status !== "spin") {
+                        obstacleInstance.status = "spin";
+                        obstacleInstance.domElement.classList.add('spin');
+                    }
+
+                }
+
+
             }
 
-        }
+
+
+        })
+
+
+
 
 
     }
@@ -278,10 +363,10 @@ class Game {
     antiGravityItem() {
         if (this.player.antigravity === false) {
             this.player.antigravity = true;
-            let orrSpeed = this.player.speed;
-            this.player.speed = 10;
+            let orrSpeed = this.player.baseSpeed;
+            this.player.baseSpeed = 10;
             setTimeout(() => {
-                this.player.speed = orrSpeed;
+                this.player.baseSpeed = orrSpeed;
                 this.player.antigravity = false;
             }, 10000)
         }
@@ -345,5 +430,7 @@ function showScreen(screen) {
     screen.dom.style.display = screen.displayMode;
 }
 
-
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
