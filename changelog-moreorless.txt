@@ -216,6 +216,31 @@ Added physics, movement inertia and weird gravity
 Modified custom hitbox, removed from the player and added to icecream ball instead 
 Hitbox situation now: get LAST icecreamball (on top) last 20 px -> this will be the HIT hitbox (and x can be different than player now)  && get ALL icecream balls EXCEPT top one -> this is the MISS hitbox (side collision) 
 
+----------------------------------------------------------------------
+
+11:42 AM 8/17/2023
+	added a lot of skinning and design + worked on next screen with W/L elements 
+12:02 PM 8/17/2023
+	updated combodisplay to show cone & cherry
+1:33 PM 8/17/2023
+	added sparkles to cone 
+2:32 PM 8/17/2023
+	fixed the boards and added design 
+4:05 PM 8/17/2023
+	added sounds & music / final fixes 
+4:19 PM 8/17/2023
+	DONE with MVP - added few design fixes 
+
+---------------------- COMMIT BEFORE CODE CLEANUP ----------------------
+
+Design, game mechanics, screens and songs 
+
+ - added background sound, catch pop sound, game logic and mechanics, infinity level, and polished all screens (start, next, end)
+
+
+
+
+
 
 
 

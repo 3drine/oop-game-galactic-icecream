@@ -1,3 +1,7 @@
+let pop = new Audio("./sound/pop.mp3");
+let backgroundMusic = new Audio("./sound/background2.mp3");
+
+
 class Player {
     constructor() {
         this.width = 50;
@@ -12,6 +16,7 @@ class Player {
         this.stackedBalls = [];
         this.antigravity = false;
         this.movementDirection = null;
+        this.effect = null; 
 
     }
     createDomElement() {
@@ -69,16 +74,33 @@ class Player {
             this.height-=30;
             this.domElement.style.height = this.height + "px"
             this.stackedBalls[0].domElement.remove();
+            this.magicCone();
             this.stackedBalls.shift();
             this.stackedBalls.forEach((element) => {
                 element.positionY-=30;
                 element.domElement.style.bottom = element.positionY+"px";
-            })
-
-            
+            }) 
         }
         
 
+
+    }
+
+    magicCone() {
+        if(this.effect === null) {
+            this.effect = document.createElement('div'); 
+            this.effect.style.backgroundImage = `url(../img/sparkle.gif)`;
+            this.effect.style.backgroundSize = "contain";
+            this.effect.style.backgroundPosition = "center";
+            this.effect.style.position = "fixed";
+            this.effect.style.bottom = "0px";
+            this.effect.style.height = "80px";
+            this.effect.style.width = "50px";
+            this.effect.style.borderRadius = "30px";
+            this.domElement.appendChild(this.effect);
+            console.log("created blackhole" + this.effect)
+        }
+        
     }
 
 
@@ -133,13 +155,15 @@ class Game {
         this.player = null;
         this.obstaclesArr = [];
         this.expectedCombo = { chocolate: 0, vanilla: 0, strawberry: 0 };
-        this.choicesArray = ["vanilla", "chocolate", "strawberry", "antigravity", "slowTime"];
+        this.choicesArray = ["vanilla", "chocolate", "strawberry","cherry", "antigravity", "slowTime"];
         this.level = 1;
         this.pickedArray = [];
         this.choiceDomElement = null;
         this.levelDomElement = null;
         this.gravity = 2;
         this.attachEventListeners();
+        this.score = 0;
+        this.scoreDomElement = null;
     }
     start() {
         this.player = new Player;
@@ -288,9 +312,11 @@ class Game {
                 //add stacking function HERE
                 if (obstacleInstance.flavor === "chocolate" || obstacleInstance.flavor === "vanilla" || obstacleInstance.flavor === "strawberry" || obstacleInstance.flavor === "cherry") {
                     this.player.stackItem(obstacleInstance);
+                    pop.play();
                     let index = this.obstaclesArr.indexOf(obstacleInstance);
                     this.obstaclesArr.splice(index, 1);
-                }
+                    this.score++;
+                    this.updateScore();                }
                 else { obstacleInstance.domElement.remove() }
 
 
@@ -332,9 +358,9 @@ class Game {
     }
 
     defineRandomCombo() {
-        this.expectedCombo.chocolate = Math.floor(Math.random() * (5 - 0) + 0);
-        this.expectedCombo.vanilla = Math.floor(Math.random() * (5 - 0) + 0);
-        this.expectedCombo.strawberry = Math.floor(Math.random() * (5 - 0) + 0);
+        this.expectedCombo.chocolate = Math.floor(Math.random() * (1 - 0) + 0);
+        this.expectedCombo.vanilla = Math.floor(Math.random() * (1 - 0) + 0);
+        this.expectedCombo.strawberry = Math.floor(Math.random() * (1 - 0) + 0);
 
         if (this.choiceDomElement === null) {
             this.choiceDomElement = document.createElement("div");
@@ -346,9 +372,11 @@ class Game {
     }
     updateComboDisplay() {
         document.querySelector('body').appendChild(this.choiceDomElement);
-        this.choiceDomElement.innerHTML = `<img src="./img/chocolate.png" alt=""> x${this.expectedCombo.chocolate} <br>
+        this.choiceDomElement.innerHTML = `<img src="./img/cherry.png" alt="" style="width:30px; left:10px;"><br>
+        <img src="./img/chocolate.png" alt=""> x${this.expectedCombo.chocolate} <br>
         <img src="./img/vanilla.png" alt=""> x${this.expectedCombo.vanilla} <br>
-        <img src="./img/strawberry.png" alt=""> x${this.expectedCombo.strawberry}`;
+        <img src="./img/strawberry.png" alt=""> x${this.expectedCombo.strawberry}<br>
+        <img src="./img/cone.png" alt="">`;
 
     }
     displayLevel() {
@@ -381,6 +409,15 @@ class Game {
         }, 10000)
     }
     endGame() {
+        this.levelDomElement.remove();
+        this.choiceDomElement.style.display = "none";
+        console.log("im removing it...")
+        console.log(this.levelDomElement)
+        console.log(this.choiceDomElement)
+        console.log(this.choiceDomElement.remove())
+        
+        
+        
         this.player.domElement.remove();
         clearInterval(this.createObjInteral)
         this.obstaclesArr.forEach(element => {
@@ -393,16 +430,39 @@ class Game {
             this.expectedCombo.strawberry === 0) {
             console.log("ITS A WIN");
             document.querySelector("#btn-next").innerText = "Next"
+            document.querySelector("#congrats").style.display = "inline"
+            document.querySelector("#failed").style.display = "none"
             showScreen(scrNext);
             this.level++;
             this.displayLevel();
         }
         else {
             console.log("LOOSER");
-            document.querySelector("#btn-next").innerText = "Retry"
+            document.querySelector("#btn-next").innerText = "Retry";
+            document.querySelector("#congrats").style.display = "none"
+            document.querySelector("#failed").style.display = "inline"
             showScreen(scrNext);
+            
         }
     }
+    createScore() {
+        if (this.scoreDomElement === null) {
+            this.scoreDomElement = document.createElement("div");
+            this.scoreDomElement.id = "score";
+            document.querySelector('body').appendChild(this.scoreDomElement);
+        }
+
+        this.scoreDomElement.innerText = "SCORE: "+this.score
+
+    }
+
+    updateScore() {
+        if (this.scoreDomElement !== null) {
+            this.scoreDomElement.innerText = `SCORE : ${this.score}`
+        }
+        
+    }
+
 }
 
 
@@ -416,11 +476,21 @@ document.getElementById('btn-start').addEventListener('click', () => {
     showScreen(scrGame);
     game = new Game();
     game.start();
+    backgroundMusic.play();
 });
 
 document.getElementById('btn-next').addEventListener('click', () => {
-    showScreen(scrGame);
-    game.start();
+    console.log(game.level);
+    if(game.level === 2 || game.level === "BONUS STAGE"){
+        showScreen(scrGame);
+        bonusStage = new InfinityGame(); 
+        bonusStage.start();
+    }
+    else {
+        showScreen(scrGame);
+        game.start();
+    }
+
 });
 
 function showScreen(screen) {
@@ -434,3 +504,48 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+
+class InfinityGame extends Game {
+    constructor() {
+        super();
+        this.level = "BONUS STAGE";
+        this.scoreDomElement = null;
+        this.expectedCombo = { chocolate: '∞', vanilla: '∞', strawberry: '∞' };
+    }
+    
+    start() {
+        super.start(); 
+        super.createScore();
+    }
+
+    defineRandomCombo() {
+        if (this.choiceDomElement === null) {
+            this.choiceDomElement = document.createElement("div");
+            this.choiceDomElement.id = "expectedCombo";
+            document.querySelector('body').appendChild(this.choiceDomElement);
+        }
+        this.updateComboDisplay();
+
+    }
+
+    endGame() {
+        this.player.domElement.remove();
+        this.scoreDomElement.remove();
+        this.choiceDomElement.style.display = "none";
+        clearInterval(this.createObjInteral)
+        this.obstaclesArr.forEach(element => {
+            element.domElement.remove();
+        }
+        )
+        this.obstaclesArr = [];
+        this.levelDomElement.remove();
+        this.choiceDomElement.remove(); 
+        document.querySelector("#final-score").innerText = `YOUR SCORE IS ${this.score}`
+        showScreen(scrEnd);
+        }
+
+
+
+
+
+}
