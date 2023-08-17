@@ -238,6 +238,21 @@ Design, game mechanics, screens and songs
  - added background sound, catch pop sound, game logic and mechanics, infinity level, and polished all screens (start, next, end)
 
 
+------------------------------------------
+
+4:25 PM 8/17/2023
+	CODE CLEANUP
+7:37 PM 8/17/2023
+	fixed a lot of bugs while cleaning and commenting the code 
+
+--------------- FINAL COMMIT - MVP FULLY IMPLEMENTED -----------------------
+
+- Final Version, ready to push to prod ! :) 
+Cleaned and organized the code, commented where needed 
+Some improvements could be made i.e. referencing all relevant values for the game look and feel at the beginning i.e. gravity/boardsize/maxCombo etc... 
+But for an MVP it's good enough, -will not touch it anymore :) 
+
+
 
 
 

@@ -126,7 +126,14 @@ h1 {
     background-size:3rem;
     background-position: bottom;
     background-repeat: no-repeat;
-
+}
+#effect {
+    background-size: contain;
+    background-position: center;
+    position: fixed;
+    bottom: 0px;
+    height: 80px;
+    width: 50px;
 }
 
 .obstacle {
